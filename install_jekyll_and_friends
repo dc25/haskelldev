@@ -1,0 +1,6 @@
+#! /bin/bash
+
+gem install jekyll
+gem install bundler
+gem install rake
+
