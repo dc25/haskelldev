@@ -1,0 +1,8 @@
+set sw=4
+set ts=4
+set expandtab
+set ic
+set fileformat=unix
+set encoding=utf-8
+
+so $HOME/myVimrc

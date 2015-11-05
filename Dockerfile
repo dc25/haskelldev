@@ -1,46 +1,37 @@
-FROM ubuntu:vivid
+FROM ubuntu:wily
 
-ENV REBUILD=true
+# Build as user ghc with "random" user id.
+ENV USER_NAME builder
+ENV USER_ID 54836
 
-RUN mkdir /workarea
-WORKDIR /workarea
+# Set the locale - not having this seems to cause problems.
+# Got this here: # http://askubuntu.com/questions/581458/how-to-configure-locales-to-unicode-in-a-docker-ubuntu-14-04-container
+#
+RUN locale-gen en_US.UTF-8  
+ENV LANG en_US.UTF-8  
+ENV LANGUAGE en_US:en  
+ENV LC_ALL en_US.UTF-8  
 
-##################################
-##### Quick and minimal set ######
-##### of developer's tools. ######
-##################################
-ADD setup_bash_startup /workarea/
-RUN ./setup_bash_startup 
+# Create a new user, to do the rest of the build.
+RUN apt-get install -y sudo
+RUN adduser --disabled-password --gecos '' --uid $USER_ID $USER_NAME
+RUN adduser $USER_NAME sudo 
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER $USER_NAME
 
-ADD install_devl_tools /workarea/
+ENV WORKAREA /home/$USER_NAME/workarea/
+RUN mkdir -p $WORKAREA
+WORKDIR $WORKAREA
+
+COPY install_devl_tools $WORKAREA
 RUN ./install_devl_tools 
 
-ADD setup_sshd /workarea/
+COPY setup_sshd $WORKAREA
 RUN ./setup_sshd 
 
-EXPOSE 22
-EXPOSE 8000
-ENTRYPOINT ["/usr/bin/svscan", "/services/"]
-
-##################################
-##### Add jekyll related items  ##
-##################################
-ADD install_jekyll_prerequisites /workarea/
-RUN ./install_jekyll_prerequisites 
-
-ADD install_bundler /workarea/
+ADD Gemfile $WORKAREA
+ADD install_bundler $WORKAREA
 RUN ./install_bundler
 
-ADD setup_jekyll_aliases /workarea/
-RUN ./setup_jekyll_aliases
-
-##################################
-##### Add some scripts          ##
-##################################
-ADD bin /root/bin
-
-###########################################
-#####    Personal Customization       #####
-###########################################
-ADD personalize /workarea/
-RUN ./personalize
+COPY vimrc $WORKAREA
+RUN cp $WORKAREA/vimrc $HOME/.vimrc

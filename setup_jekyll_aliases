@@ -1,7 +1,0 @@
-#! /bin/sh
-
-touch /root/aliases 
-cat >> /root/aliases << EOF
-alias jserv='bundle exec jekyll serve -H 0.0.0.0 --baseurl ""'
-alias bupd='bundle update'
-EOF

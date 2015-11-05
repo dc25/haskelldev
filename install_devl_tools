@@ -1,8 +1,27 @@
 #! /bin/bash
 
-apt-get update && apt-get install -y \
+basics=" \
+    vim
     daemontools \
     git \
     openssh-server \
     tmux \
-    vim
+    vim-gtk"
+
+jekyll_prereq=" \
+    g++ \
+    git \
+    make \
+    nodejs-legacy \
+    npm \
+    python \
+    ruby \
+    ruby-dev"
+
+sudo apt-get update
+
+for s in apt-utils $basics $jekyll_prereq; do
+    echo "apt-get INSTALLING $s"
+    sudo apt-get install -y $s
+done 
+
