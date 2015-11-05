@@ -8,7 +8,7 @@ touch ~/aliases
 cat >> /root/startup << EOF
 . ~/aliases
 
-## export PATH=\
-## /root/.cabal/bin:\
-## \$PATH
-## EOF
+export PATH=\
+/root/bin:\
+\$PATH
+EOF
