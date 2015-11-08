@@ -23,15 +23,15 @@ ENV WORKAREA /home/$USER_NAME/workarea/
 RUN mkdir -p $WORKAREA
 WORKDIR $WORKAREA
 
-COPY install_devl_tools $WORKAREA
+COPY scripts/install_devl_tools $WORKAREA
 RUN ./install_devl_tools 
 
-COPY setup_sshd $WORKAREA
+COPY scripts/setup_sshd $WORKAREA
 RUN ./setup_sshd 
 
-ADD Gemfile $WORKAREA
-ADD install_bundler $WORKAREA
+ADD scripts/Gemfile $WORKAREA
+ADD scripts/install_bundler $WORKAREA
 RUN ./install_bundler
 
-COPY vimrc $WORKAREA
+COPY scripts/vimrc $WORKAREA
 RUN cp $WORKAREA/vimrc $HOME/.vimrc
