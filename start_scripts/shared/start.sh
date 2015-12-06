@@ -3,10 +3,12 @@
 export USER_NAME=$1
 export USER_ID=$2
 
-sudo adduser --disabled-password --gecos '' --uid $USER_ID $USER_NAME
-sudo adduser $USER_NAME sudo
+echo "configuring user: $USER_NAME ..."
 
-sudo su $USER_NAME -c /start/personalize
+sudo adduser --disabled-password --gecos '' --uid $USER_ID $USER_NAME > /dev/null 2>&1 
+sudo adduser $USER_NAME sudo > /dev/null 2>&1 
 
-echo "Starting sshd"
+sudo su $USER_NAME -c /start/personalize.sh 
+
+echo "sshd started"
 sudo /usr/bin/svscan /services/
