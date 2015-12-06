@@ -30,6 +30,7 @@ COPY build_scripts/setup_sshd $WORKAREA
 RUN ./setup_sshd 
 
 ADD build_scripts/Gemfile $WORKAREA
+RUN cp $WORKAREA/Gemfile $HOME
 ADD build_scripts/install_bundler $WORKAREA
 RUN ./install_bundler
 
