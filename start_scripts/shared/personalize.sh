@@ -17,7 +17,7 @@ cat >> $HOME/.bashrc << EOF
 EOF
 
 ## Make local copies of some /home/builder content .
-for s in .vim .vimrc Gemfile; do
+for s in .vimrc Gemfile; do
     echo "copying /home/builder/$s to $HOME"
     cp -r /home/builder/$s $HOME
 done
