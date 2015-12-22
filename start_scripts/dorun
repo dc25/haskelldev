@@ -51,4 +51,4 @@ USER_NAME=`id -u -n`
 USER_ID=`id -u`
 USER_KEY=`cat $PUBLIC_KEY`
 
-exec sudo /usr/bin/docker run -v /home/dave/repos:/repos --entrypoint /home/builder/workarea/shared/$START_SCRIPT $DOCKER_ARGUMENTS $USER_NAME $USER_ID "$USER_KEY"
+exec sudo /usr/bin/docker run -v /home/dave/repos:/repos --entrypoint /home/builder/workarea/runtime/$START_SCRIPT $DOCKER_ARGUMENTS $USER_NAME $USER_ID "$USER_KEY"
