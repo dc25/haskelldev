@@ -2,7 +2,7 @@ FROM ubuntu:wily
 
 # Build as user ghc with "random" user id.
 ENV USER_NAME builder
-ENV USER_ID 54836
+ENV USER_ID 54936
 
 # Set the locale - not having this seems to cause problems.
 # Got this here: # http://askubuntu.com/questions/581458/how-to-configure-locales-to-unicode-in-a-docker-ubuntu-14-04-container
@@ -36,3 +36,7 @@ RUN ./install_bundler
 
 COPY build_scripts/vimrc $WORKAREA
 RUN cp $WORKAREA/vimrc $HOME/.vimrc
+
+RUN mkdir -p $WORKAREA/shared
+COPY build_scripts/shared/* $WORKAREA/shared/
+

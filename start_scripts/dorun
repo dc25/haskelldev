@@ -7,8 +7,6 @@
 DOCKER_ARGUMENTS=$*
 
 # Technique for start dir thanks to http://stackoverflow.com/a/246128/509928 .
-RELATIVE_START_DIR="$( dirname "${BASH_SOURCE[0]}" )/shared"
-START_DIR="$( cd $RELATIVE_START_DIR && pwd )"
 
 START_SCRIPT=start.sh
 
@@ -16,7 +14,6 @@ SSH_DIR=$HOME/.ssh
 RSA=$SSH_DIR/id_rsa
 RSA_PUB=${RSA}.pub
 DSA_PUB=$SSH_DIR/id_dsa.pub
-AUTHORIZED_KEYS=$RELATIVE_START_DIR/authorized_keys
 
 # If no key pair exists, offer to create and copy to authorized_keys
 if [[ ! -e $RSA_PUB && ! -e $DSA_PUB ]]; then
@@ -50,39 +47,8 @@ if [[ -e $DSA_PUB ]] ; then
     PUBLIC_KEY=$DSA_PUB
 fi
 
-# If no key pair but public key is different from authorized_keys then 
-# offer to copy existing public_key to authorized_keys
-if [[ "$PUBLIC_KEY" != "" ]]; then
-    if ! cmp $PUBLIC_KEY $AUTHORIZED_KEYS; then
-        echo "Public key exists but is different from $AUTHORIZED_KEYS"
-        DEFAULT_ACTION="y"
-        read -e -p "Copy public key to $AUTHORIZED_KEYS [y/n/q]? " -i $DEFAULT_ACTION ACTION
-        case $ACTION in
-            y)
-                cp $PUBLIC_KEY $AUTHORIZED_KEYS
-                ;;
-            q)
-                echo "exiting" 
-                exit 1
-                ;;
-            n)
-                echo "Continuing without copying $PUBLIC_KEY to $AUTHORIZED_KEYS" 
-                ;;
-            *)
-                echo "Invalid input: $ACTION" 
-                exit 1
-                ;;
-        esac
-
-    fi
-fi
-
-if [[ ! -e $START_DIR/$START_SCRIPT ]]; then
-    echo "$0 expects $RELATIVE_START_DIR/$START_SCRIPT to be present."
-    exit -1
-fi
-
 USER_NAME=`id -u -n`
 USER_ID=`id -u`
+USER_KEY=`cat $PUBLIC_KEY`
 
-exec sudo /usr/bin/docker run -v $START_DIR:/start -v `pwd`:/workdir --entrypoint /start/$START_SCRIPT $DOCKER_ARGUMENTS $USER_NAME $USER_ID
+exec sudo /usr/bin/docker run -v /home/dave/repos:/repos --entrypoint /home/builder/workarea/shared/$START_SCRIPT $DOCKER_ARGUMENTS $USER_NAME $USER_ID "$USER_KEY"
