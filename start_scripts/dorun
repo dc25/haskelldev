@@ -1,8 +1,8 @@
 #! /bin/bash
 
 # This script starts a docker container that runs start.sh .
-# The name and id of the current user are passed to start.sh so that start.sh
-# can create a user with the same name and id inside the docker image.
+# The name and id and public key of the current user are passed to start.sh 
+# so that start.sh can configure a user inside the docker image.
 
 DOCKER_ARGUMENTS=$*
 
@@ -11,32 +11,14 @@ DOCKER_ARGUMENTS=$*
 START_SCRIPT=start.sh
 
 SSH_DIR=$HOME/.ssh
-RSA=$SSH_DIR/id_rsa
-RSA_PUB=${RSA}.pub
+RSA_PUB=$SSH_DIR/id_rsa.pub
 DSA_PUB=$SSH_DIR/id_dsa.pub
 
-# If no key pair exists, offer to create and copy to authorized_keys
+# A ssh key pair is needed.
 if [[ ! -e $RSA_PUB && ! -e $DSA_PUB ]]; then
     echo "No public/private .ssh key pairs exist."
-    DEFAULT_ACTION="y"
-    read -e -p "Create keys and copy public key to $AUTHORIZED_KEYS [y/n/q]? " -i $DEFAULT_ACTION ACTION
-    case $ACTION in
-        y)
-            ssh-keygen -q -P "" -f $RSA
-            cp $RSA_PUB $AUTHORIZED_KEYS
-            ;;
-        q)
-            echo "exiting" 
-            exit 1
-            ;;
-        n)
-            echo "Continuing without creating $RSA and $RSA_PUB" 
-            ;;
-        *)
-            echo "Invalid input: $ACTION" 
-            exit 1
-            ;;
-    esac
+    echo "Create a key pair with ssh-keygen before running this script."
+    exit 1
 fi
 
 if [[ -e $RSA_PUB ]] ; then
@@ -51,4 +33,4 @@ USER_NAME=`id -u -n`
 USER_ID=`id -u`
 USER_KEY=`cat $PUBLIC_KEY`
 
-exec sudo /usr/bin/docker run -v /home/dave/repos:/repos --entrypoint /home/builder/workarea/runtime/$START_SCRIPT $DOCKER_ARGUMENTS $USER_NAME $USER_ID "$USER_KEY"
+dockr run --entrypoint /home/builder/workarea/runtime/$START_SCRIPT $DOCKER_ARGUMENTS $USER_NAME $USER_ID "$USER_KEY"
