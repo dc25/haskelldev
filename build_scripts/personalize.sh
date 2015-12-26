@@ -3,7 +3,7 @@
 # This script sets up a user's environment when a docker container starts up.
 # Edit to suit your own tastes.
 
-cd /home/builder/workarea/runtime
+cd /home/builder/workarea
 
 mkdir -p $HOME/.ssh
 cp authorized_keys $HOME/.ssh

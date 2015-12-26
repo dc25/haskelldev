@@ -37,6 +37,5 @@ RUN ./install_bundler
 COPY build_scripts/vimrc $WORKAREA
 RUN cp $WORKAREA/vimrc $HOME/.vimrc
 
-RUN mkdir -p $WORKAREA/runtime
-COPY build_scripts/runtime/* $WORKAREA/runtime/
+COPY build_scripts/* $WORKAREA
 
