@@ -37,5 +37,16 @@ RUN ./install_bundler
 COPY build_scripts/vimrc $WORKAREA
 RUN cp $WORKAREA/vimrc $HOME/.vimrc
 
-COPY build_scripts/* $WORKAREA
+COPY build_scripts/myVimrc                    $WORKAREA/
+RUN cp $WORKAREA/myVimrc $HOME
+
+COPY build_scripts/myBashrc                   $WORKAREA/
+RUN cp $WORKAREA/myBashrc $HOME
+RUN echo ". ~/myBashrc" >> ~/.bashrc
+
+COPY build_scripts/tmux.conf                  $WORKAREA/
+RUN cp $WORKAREA/tmux.conf $HOME/.tmux.conf
+
+COPY build_scripts/personalize.sh             $WORKAREA/
+COPY build_scripts/start.sh                   $WORKAREA/
 

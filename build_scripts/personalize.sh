@@ -8,12 +8,12 @@ cd /home/builder/workarea
 mkdir -p $HOME/.ssh
 cp authorized_keys $HOME/.ssh
 
-cp startup $HOME
+cp myBashrc $HOME
 cp myVimrc $HOME
 
 touch $HOME/.bashrc
 cat >> $HOME/.bashrc << EOF
-. ~/startup
+. ~/myBashrc
 EOF
 
 ## Make local copies of some /home/builder content .
