@@ -2,17 +2,19 @@
 
 export USER_NAME=$1
 export USER_ID=$2
-export USER_KEY=$3
 
 cd /home/builder/workarea
 
-echo $USER_KEY > authorized_keys
 echo "configuring user: $USER_NAME ..."
 
 sudo adduser --disabled-password --gecos '' --uid $USER_ID $USER_NAME > /dev/null 2>&1 
 sudo adduser $USER_NAME sudo > /dev/null 2>&1 
 
+BUILDER_COPY_FILES="myVimrc myBashrc .vimrc .bashrc .tmux.conf"
+
+cd /home/builder/
+sudo su $USER_NAME -c "find $BUILDER_COPY_FILES -depth -print0 | cpio -pdum0 \$HOME "
+
 sudo su $USER_NAME -c /home/builder/workarea/personalize.sh 
 
-echo "sshd started"
-sudo /usr/bin/svscan /services/
+sudo su $USER_NAME /bin/bash -c tmux

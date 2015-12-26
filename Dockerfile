@@ -2,7 +2,7 @@ FROM ubuntu:wily
 
 # Build as user ghc with "random" user id.
 ENV USER_NAME builder
-ENV USER_ID 54936
+ENV USER_ID 54946
 
 # Set the locale - not having this seems to cause problems.
 # Got this here: # http://askubuntu.com/questions/581458/how-to-configure-locales-to-unicode-in-a-docker-ubuntu-14-04-container
@@ -25,9 +25,6 @@ WORKDIR $WORKAREA
 
 COPY build_scripts/install_devl_tools $WORKAREA
 RUN ./install_devl_tools 
-
-COPY build_scripts/setup_sshd $WORKAREA
-RUN ./setup_sshd 
 
 ADD build_scripts/Gemfile $WORKAREA
 RUN cp $WORKAREA/Gemfile $HOME
