@@ -47,3 +47,5 @@ RUN cp $WORKAREA/tmux.conf $HOME/.tmux.conf
 COPY build_scripts/personalize.sh             $WORKAREA/
 COPY build_scripts/start.sh                   $WORKAREA/
 
+USER root
+RUN cp $WORKAREA/start.sh /
