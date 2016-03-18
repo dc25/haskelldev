@@ -2,7 +2,10 @@
 
 basics=" \
     cpio \
+    daemontools \
     git \
+    net-tools \
+    openssh-server \
     tmux \
     vim-gtk"
 

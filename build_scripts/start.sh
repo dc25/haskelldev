@@ -2,19 +2,36 @@
 
 export USER_NAME=$1
 export USER_ID=$2
-
-cd /home/builder/workarea
+if [ "$3" != "" ]; then
+    export USER_KEY=$3
+fi
 
 echo "configuring user: $USER_NAME ..."
 
 sudo adduser --disabled-password --gecos '' --uid $USER_ID $USER_NAME > /dev/null 2>&1 
 sudo adduser $USER_NAME sudo > /dev/null 2>&1 
 
-BUILDER_COPY_FILES="myVimrc myBashrc .vimrc .bashrc .tmux.conf"
+sudo su $USER_NAME -c "mkdir \$HOME/.ssh"
+if [ "$USER_KEY" != "" ]; then
+    sudo su $USER_NAME -c "echo $USER_KEY > \$HOME/.ssh/authorized_keys"
+    sudo su $USER_NAME -c "chmod 600 \$HOME/.ssh/authorized_keys"
+fi
 
-cd /home/builder/
-sudo su $USER_NAME -c "find $BUILDER_COPY_FILES -depth -print0 | cpio -pdum0 \$HOME "
+WORKAREA=/home/builder/workarea/
+cd $WORKAREA
 
-sudo su $USER_NAME -c /home/builder/workarea/personalize.sh 
+sudo su $USER_NAME -c "cp tmux.conf ~/.tmux.conf"
+sudo su $USER_NAME -c "cp vimrc ~/.vimrc"
+sudo su $USER_NAME -c "cp myVimrc ~"
+sudo su $USER_NAME -c "cp myBashrc ~"
+sudo su $USER_NAME -c "echo '. ~/myBashrc' >> ~/.bashrc"
+sudo su $USER_NAME -c "cp Gemfile ~"
 
-sudo su $USER_NAME /bin/bash -c tmux
+sudo su $USER_NAME -c "$WORKAREA/personalize.sh"
+
+if [ "$USER_KEY" != "" ]; then
+    echo "sshd started"
+    sudo /usr/bin/svscan /services/
+else
+    sudo su $USER_NAME /bin/bash -c tmux
+fi
