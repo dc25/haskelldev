@@ -1,4 +1,4 @@
-FROM ubuntu:wily
+FROM ubuntu:16.10
 
 # Build as user ghc with "random" user id.
 ENV USER_NAME builder
@@ -13,7 +13,20 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8  
 
 # Create a new user, to do the rest of the build.
-RUN apt-get install -y sudo
+RUN apt-get update && apt-get install -y \
+    bzip2 \
+    cpio \
+    curl \
+    daemontools \
+    entr \
+    git \
+    net-tools \
+    openssh-server \
+    python \
+    tmux \
+    sudo \
+    vim-gtk 
+
 RUN adduser --disabled-password --gecos '' --uid $USER_ID $USER_NAME
 RUN adduser $USER_NAME sudo 
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
