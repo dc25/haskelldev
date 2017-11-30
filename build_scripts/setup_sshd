@@ -1,11 +1,11 @@
 #! /bin/bash
 
-sudo mkdir -p /services/sshd /var/run/sshd 
+mkdir -p /services/sshd /var/run/sshd 
 
-cat << EOF | sudo tee /services/sshd/run 
+cat << EOF | tee /services/sshd/run 
 #!/bin/bash
 exec /usr/sbin/sshd
 EOF
 
-sudo chmod +x /services/sshd/run
-sudo sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+chmod +x /services/sshd/run
+sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
