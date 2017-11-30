@@ -59,16 +59,8 @@ RUN chown -R ${user} .
 COPY build_scripts/setup_basic_vim_plugins .
 RUN su ${user} -c ./setup_basic_vim_plugins
 
-# COPY build_scripts/user_installs.sh .
-# RUN su ${user} -c ./user_installs.sh
-
 COPY build_scripts/personalize.sh .
 RUN su ${user} -c ./personalize.sh
-
-USER ${user}
-RUN mkdir .ssh
-RUN echo ${key} | tee .ssh/authorized_keys > /dev/null
-RUN chmod 600 .ssh/authorized_keys
 
 # COPY build_scripts/myVimrc .
 COPY build_scripts/start.sh .
@@ -76,8 +68,4 @@ COPY build_scripts/.tmux.conf .
 COPY build_scripts/.vimrc .
 
 RUN sudo chown -R ${user} .
-
-COPY build_scripts/Gemfile .
-COPY build_scripts/install_bundler .
-RUN ./install_bundler
 
