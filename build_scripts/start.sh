@@ -1,8 +1,7 @@
 #!/bin/bash
 
 export USER_NAME=$1
-export USER_ID=$2
-export USER_KEY=$3
+export USER_KEY=$2
 
 user_exists=$(id -u $USER_NAME > /dev/null 2>&1; echo $?) 
 if [[ "$user_exists" == 0 ]]; then

@@ -29,14 +29,6 @@ RUN apt-get update && apt-get install -y \
     sudo \
     vim-gtk 
 
-RUN apt-get update && apt-get install -y \
-    g++ \
-    make \
-    nodejs-legacy \
-    npm \
-    ruby \
-    ruby-dev
-
 WORKDIR /tmp
 COPY build_scripts/setup_sshd .
 RUN ./setup_sshd
@@ -44,6 +36,8 @@ RUN ./setup_sshd
 ARG user
 ARG id
 ARG key
+
+ENV DEVL $user
 
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers
 RUN adduser --disabled-password --gecos '' --home /workarea --uid $id $user 
@@ -62,10 +56,8 @@ RUN su ${user} -c ./setup_basic_vim_plugins
 COPY build_scripts/personalize.sh .
 RUN su ${user} -c ./personalize.sh
 
-# COPY build_scripts/myVimrc .
 COPY build_scripts/start.sh .
 COPY build_scripts/.tmux.conf .
 COPY build_scripts/.vimrc .
 
 RUN sudo chown -R ${user} .
-
