@@ -40,24 +40,18 @@ ARG key
 ENV DEVL $user
 
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers
-RUN adduser --disabled-password --gecos '' --home /workarea --uid $id $user 
-RUN adduser $user sudo 
+RUN adduser --disabled-password --gecos '' --home /workarea --uid $id $DEVL 
+RUN adduser $DEVL sudo 
 
 WORKDIR /workarea
 
-# copy bash config scripts now in case later installs modify them
 COPY build_scripts/.profile .
 COPY build_scripts/.bashrc .
-RUN chown -R ${user} .
-
-COPY build_scripts/setup_basic_vim_plugins .
-RUN su ${user} -c ./setup_basic_vim_plugins
-
-COPY build_scripts/personalize.sh .
-RUN su ${user} -c ./personalize.sh
-
 COPY build_scripts/start.sh .
 COPY build_scripts/.tmux.conf .
 COPY build_scripts/.vimrc .
 
-RUN sudo chown -R ${user} .
+RUN chown -R ${DEVL} .
+
+COPY build_scripts/setup_basic_vim_plugins .
+RUN su ${DEVL} -c ./setup_basic_vim_plugins
