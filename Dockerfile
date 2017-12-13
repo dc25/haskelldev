@@ -55,3 +55,7 @@ RUN chown -R ${DEVL} .
 
 COPY build_scripts/setup_basic_vim_plugins .
 RUN su ${DEVL} -c ./setup_basic_vim_plugins
+
+RUN su ${DEVL} -c  'git config --global user.email "davecompton7@gmail.com"'
+RUN su ${DEVL} -c  'git config --global user.name "Dave Compton"'
+
