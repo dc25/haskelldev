@@ -1,4 +1,4 @@
-FROM vcatechnology/linux-mint
+FROM ubuntu:17.10
 
 RUN apt-get update && apt-get install -y \
     bzip2 \
