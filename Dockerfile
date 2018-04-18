@@ -19,28 +19,26 @@ WORKDIR /tmp
 COPY build_scripts/setup_sshd .
 RUN ./setup_sshd
 
+COPY build_scripts/start.sh  /
+
 ARG user
 ARG id
 
-ENV DEVL $user
-
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers
-RUN adduser --disabled-password --gecos '' --home /workarea --uid $id $DEVL 
-RUN adduser $DEVL sudo 
+RUN adduser --disabled-password --gecos '' --uid $id $user 
+RUN adduser $user sudo 
 
-WORKDIR /workarea
+RUN mkdir /tmp/build_scripts
+COPY build_scripts/.profile  /tmp/build_scripts
+COPY build_scripts/.bashrc  /tmp/build_scripts
+COPY build_scripts/.tmux.conf  /tmp/build_scripts
+COPY build_scripts/.vimrc  /tmp/build_scripts
 
-COPY build_scripts/.profile .
-COPY build_scripts/.bashrc .
-COPY build_scripts/start.sh .
-COPY build_scripts/.tmux.conf .
-COPY build_scripts/.vimrc .
-
-RUN chown -R ${DEVL} .
-
-COPY build_scripts/setup_basic_vim_plugins .
-RUN su ${DEVL} -c ./setup_basic_vim_plugins
-
-RUN su ${DEVL} -c  'git config --global user.email "davecompton7@gmail.com"'
-RUN su ${DEVL} -c  'git config --global user.name "Dave Compton"'
+RUN su $user -c "cp /tmp/build_scripts/{.profile,.bashrc,.tmux.conf,.vimrc} ~"
+ 
+COPY build_scripts/setup_basic_vim_plugins  /tmp/build_scripts/
+RUN su $user -c '/tmp/build_scripts/setup_basic_vim_plugins'
+ 
+RUN su $user -c 'git config --global user.email "davecompton7@gmail.com"'
+RUN su $user -c 'git config --global user.name "Dave Compton"'
 
