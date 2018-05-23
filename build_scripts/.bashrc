@@ -11,6 +11,3 @@ alias ....='cd ../../..'
 alias v=vim
 alias cdgnc='cd /repos/gitnc'
 alias cdgit='cd /repos/git'
-
-alias jserv='bundle exec jekyll serve -H 0.0.0.0 --baseurl ""'
-alias bupd='bundle update'
