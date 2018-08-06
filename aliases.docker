@@ -1,0 +1,34 @@
+## run docker as sudo
+function dockr
+{
+    sudo docker "$@"
+}
+
+## docker build with 'user' and 'id' arguments
+function dob
+{
+    dockr build -t $1 --build-arg user=`id -u -n` --build-arg id=`id -u`  .
+}
+
+## docker run with user name and public key passed on command line
+function dor
+{
+    image=$1
+    shift
+    dockr run -it $* --entrypoint '/start.sh' $image `id -u -n` "`cat ~/.ssh/id_rsa.pub`"
+}
+
+# customize as needed
+function dorm
+{
+    dor $1 -v /home/dave/repos:/repos 
+}
+
+## ssh into running docker
+function dosh
+{
+    container=`dockr ps -q`
+    ip=`dockr inspect --format '{{ .NetworkSettings.IPAddress }}' $container | head -n 1`
+    ssh $ip -YC -t 'tmux a || tmux || /bin/bash'
+}
+
