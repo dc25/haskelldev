@@ -24,5 +24,7 @@ RUN adduser --disabled-password --gecos '' --uid $id $user
 RUN adduser $user sudo 
 
 COPY build_scripts/tmux.conf  .
-
 RUN su $user -c "cp /tmp/tmux.conf ~/.tmux.conf"
+
+COPY build_scripts/vimrc  .
+RUN su $user -c "cp /tmp/vimrc ~/.vimrc"
