@@ -31,6 +31,9 @@ RUN su $user -c "cp /tmp/tmux.conf ~/.tmux.conf"
 COPY build_scripts/install_neovim.sh /tmp
 RUN su ${user} -c /tmp/install_neovim.sh
 
+COPY build_scripts/install_latest_vim.sh /tmp
+RUN /tmp/install_latest_vim.sh
+
 COPY build_scripts/sshdVimrc /tmp
 RUN su ${user} -c 'cp /tmp/sshdVimrc ~'
 RUN su ${user} -c "echo so ~/sshdVimrc | tee -a ~/vimrc"
