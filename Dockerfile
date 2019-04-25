@@ -1,4 +1,5 @@
-FROM ubuntu:18.04
+FROM ubuntu:16.04
+# went back to 16.04 to get binary compatility for rust programs
 # using 18.04 for now because I couldn't build 
 # https://github.com/portstrom/fetch_mediawiki_configuration with 18.10
 

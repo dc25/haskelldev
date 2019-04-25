@@ -15,7 +15,7 @@ function dor
 {
     image=$1
     shift
-    dockr run -it $* --entrypoint '/start.sh' $image `id -u -n` "`cat ~/.ssh/id_rsa.pub`"
+    dockr run --privileged -it $* --entrypoint '/start.sh' $image `id -u -n` "`cat ~/.ssh/id_rsa.pub`"
 }
 
 # customize as needed
@@ -30,5 +30,15 @@ function dosh
     container=`dockr ps -q`
     ip=`dockr inspect --format '{{ .NetworkSettings.IPAddress }}' $container | head -n 1`
     ssh $ip -YC -t 'tmux a || tmux || /bin/bash'
+}
+
+function dors
+{
+    sudo date
+    # dorm $* > /dev/null 2>&1 &
+    # dorm $* 2>&1 > /dev/null &
+    nohup dorm $* > /tmp/xxxx &
+    sleep 1
+    dosh
 }
 
