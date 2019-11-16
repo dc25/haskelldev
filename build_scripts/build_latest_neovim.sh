@@ -36,11 +36,3 @@ git clone https://github.com/neovim/neovim.git
 cd neovim
 sudo make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
-
-touch ~/vimrc
-
-mkdir -p ~/.config/nvim
-echo so ~/vimrc | tee -a ~/.config/nvim/init.vim
-
-
-

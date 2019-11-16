@@ -38,6 +38,12 @@ RUN /tmp/install_latest_vim.sh
 COPY build_scripts/build_latest_neovim.sh /tmp
 RUN /tmp/build_latest_neovim.sh
 
+COPY build_scripts/setup_vimrc.sh /tmp
+RUN su $user -c /tmp/setup_vimrc.sh
+
+COPY build_scripts/setup_neovimrc.sh /tmp
+RUN su $user -c /tmp/setup_neovimrc.sh
+
 COPY build_scripts/sshdVimrc /tmp
 RUN su ${user} -c 'cp /tmp/sshdVimrc ~'
 RUN su ${user} -c "echo so ~/sshdVimrc | tee -a ~/vimrc"
