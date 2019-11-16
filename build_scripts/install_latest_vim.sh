@@ -22,3 +22,8 @@ make distclean
 make
 sudo make install
 
+touch ~/vimrc
+
+echo so ~/vimrc | tee -a ~/.vimrc
+
+
