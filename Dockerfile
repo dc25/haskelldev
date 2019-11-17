@@ -32,11 +32,17 @@ RUN adduser $user sudo
 COPY build_scripts/tmux.conf  .
 RUN su $user -c "cp /tmp/tmux.conf ~/.tmux.conf"
 
-COPY build_scripts/install_latest_vim.sh /tmp
-RUN /tmp/install_latest_vim.sh
+COPY build_scripts/build_latest_vim.sh /tmp
+RUN /tmp/build_latest_vim.sh
 
-COPY build_scripts/build_latest_neovim.sh /tmp
-RUN /tmp/build_latest_neovim.sh
+# COPY build_scripts/build_latest_neovim.sh /tmp
+# RUN /tmp/build_latest_neovim.sh
+
+# COPY build_scripts/install_vim.sh /tmp
+# RUN /tmp/install_vim.sh
+
+COPY build_scripts/install_neovim.sh /tmp
+RUN /tmp/install_neovim.sh
 
 COPY build_scripts/setup_vimrc.sh /tmp
 RUN su $user -c /tmp/setup_vimrc.sh
