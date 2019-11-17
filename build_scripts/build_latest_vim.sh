@@ -9,9 +9,9 @@ sudo apt-get install -y \
     git  \
     make  \
     gcc  \
-    libncurses5-dev
+    libncurses-dev
 
-# change to libncurses-dev when switching to ubuntu 18.10
+# change to libncurses5-dev if using older (pre 18.10 ?) version of ubuntu.
 
 cd /tmp
 
