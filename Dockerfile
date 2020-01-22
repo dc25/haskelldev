@@ -1,12 +1,5 @@
-# went to 19.10 to get latest ruby
 FROM ubuntu:19.10
 
-# FROM ubuntu:16.04
-# went back to 16.04 to get binary compatility for rust programs
-# using 18.04 for now because I couldn't build 
-# https://github.com/portstrom/fetch_mediawiki_configuration with 18.10
-
-ENV XXXX yyyyz
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y \
@@ -32,34 +25,3 @@ RUN adduser $user sudo
 
 COPY build_scripts/tmux.conf  .
 RUN su $user -c "cp /tmp/tmux.conf ~/.tmux.conf"
-
-COPY build_scripts/install_vim.sh /tmp
-RUN /tmp/install_vim.sh
-
-# COPY build_scripts/build_latest_vim.sh /tmp
-# RUN /tmp/build_latest_vim.sh
-
-COPY build_scripts/install_neovim.sh /tmp
-RUN /tmp/install_neovim.sh
-
-# COPY build_scripts/build_latest_neovim.sh /tmp
-# RUN /tmp/build_latest_neovim.sh
-
-COPY build_scripts/setup_vimrc.sh /tmp
-RUN su $user -c /tmp/setup_vimrc.sh
-
-COPY build_scripts/setup_neovimrc.sh /tmp
-RUN su $user -c /tmp/setup_neovimrc.sh
-
-COPY build_scripts/build_ctags.sh /tmp
-RUN su $user -c /tmp/build_ctags.sh
-
-COPY build_scripts/sshdVimrc /tmp
-RUN su ${user} -c 'cp /tmp/sshdVimrc ~'
-RUN su ${user} -c "echo so ~/sshdVimrc | tee -a ~/vimrc"
-
-COPY build_scripts/sshdBashrc /tmp
-RUN su ${user} -c 'cp /tmp/sshdBashrc ~'
-RUN su ${user} -c "echo . ~/sshdBashrc | tee -a ~/.bashrc"
-
-

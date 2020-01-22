@@ -20,12 +20,6 @@ function dor
     dockr run --privileged -it $* --entrypoint '/start.sh' $image `id -u -n` "`cat ~/.ssh/id_rsa.pub`"
 }
 
-# customize as needed
-function dorm
-{
-    dor $1 -v /home/dave/repos:/repos 
-}
-
 ## ssh into running docker
 function dosh
 {
@@ -33,14 +27,3 @@ function dosh
     ip=`dockr inspect --format '{{ .NetworkSettings.IPAddress }}' $container | head -n 1`
     ssh $ip -YC -t 'tmux a || tmux || /bin/bash'
 }
-
-function dors
-{
-    sudo date
-    # dorm $* > /dev/null 2>&1 &
-    # dorm $* 2>&1 > /dev/null &
-    nohup dorm $* > /tmp/xxxx &
-    sleep 1
-    dosh
-}
-
