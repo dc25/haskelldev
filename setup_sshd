@@ -9,4 +9,3 @@ EOF
 
 chmod +x /services/sshd/run
 echo "X11UseLocalhost no" >> /etc/ssh/sshd_config
-# sed -i -e 's/X11UseLocalhost.*/X11UseLocalhost no/' /etc/ssh/sshd_config
