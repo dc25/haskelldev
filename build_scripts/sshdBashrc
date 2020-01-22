@@ -1,0 +1,8 @@
+export REPOS=/repos
+alias cdgit='cd $REPOS/git'
+alias cdgnc='cd $REPOS/gitnc'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
