@@ -8,4 +8,4 @@ su $USER_NAME -c 'sudo echo $USER_KEY > ~/.ssh/authorized_keys'
 su $USER_NAME -c 'chmod 600 ~/.ssh/authorized_keys'
 
 echo "sshd started"
-sudo /usr/bin/svscan /services/ 
+svscan /services/ 
