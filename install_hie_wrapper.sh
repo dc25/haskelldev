@@ -18,6 +18,6 @@ cd haskell-ide-engine
 # stack ./install.hs hie-8.6.5
 
 # this did not work - complained about hie-8.8.3 argument not being supported.
-# stack ./install.hs hie hie-8.8.3
-stack ./install.hs hie 
+# stack ./install.hs hie 
+stack ./install.hs hie hie-8.8.2
 
