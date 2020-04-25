@@ -1,15 +1,13 @@
-## run docker as sudo
-function dockr
-{
-    sudo docker "$@"
-}
-
 ## docker build with 'user' and 'id' arguments
 function dob
 {
     image=$1
     shift
-    sudo docker build -t $image $* --build-arg user=`id -u -n` --build-arg id=`id -u`  .
+    sudo docker build -t $image $*                                      \
+                             --build-arg user=`id -u -n`                \
+                             --build-arg id=`id -u`                     \
+                             --build-arg key="`cat ~/.ssh/id_rsa.pub`"  \
+                             .
 }
 
 ## docker run with user name and public key passed on command line
@@ -17,7 +15,7 @@ function dor
 {
     image=$1
     shift
-    sudo docker run --privileged -it $* --entrypoint '/start.sh' $image `id -u -n` "`cat ~/.ssh/id_rsa.pub`"
+    sudo docker run --privileged -it $* --entrypoint '/start.sh' $image 
 }
 
 ## ssh into running docker
