@@ -1,11 +1,6 @@
 #! /bin/bash
 
-# phoityne does not compile using stack resolver: lts-15.2
-# ( or at least I couldn't get it to compile )
-# but it works with lts-14.27 which is what I'm using for now.
-# stack install phoityne-vscode haskell-dap
-# per: https://github.com/phoityne/phoityne-vscode/issues/48
-stack install haskell-dap ghci-dap haskell-debug-adapter --resolver lts-15.2
+stack install haskell-dap ghci-dap haskell-debug-adapter 
 
 EXTENSIONS='phoityne.phoityne-vscode '
 for s in $EXTENSIONS; do
@@ -26,5 +21,5 @@ cd $WORKDIR
 
 git clone https://github.com/digital-asset/ghcide.git
 cd ghcide
-stack install --resolver lts-15.2
+stack install 
 
